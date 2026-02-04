@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useElectoralStore } from "../store/useElectoralStore";
+import { GitHub, Place } from "@mui/icons-material";
 import {
-  Container,
+  Alert,
   Box,
-  Typography,
-  Grid,
+  Button,
   Card,
   CardContent,
-  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Link,
   Paper,
   Stack,
-  CircularProgress,
-  Alert,
+  Typography,
 } from "@mui/material";
-import { Map as MapIcon, Place } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 import { SeatMarkers } from "../components/SeatMarkers";
 import { electoralDataService } from "../services/electoralData.service";
+import { useElectoralStore } from "../store/useElectoralStore";
 import {
   DEFAULT_LATITUDE,
   DEFAULT_LONGITUDE,
@@ -74,7 +75,8 @@ const VistaNacional = () => {
             spacing={2}
             mb={2}
           >
-            <MapIcon sx={{ fontSize: 40, color: "primary.main" }} />
+            {/* Bandera de Bolivia */}
+            <Typography sx={{ fontSize: 32 }}>🇧🇴</Typography>
             <Typography
               variant="h3"
               component="h1"
@@ -83,6 +85,18 @@ const VistaNacional = () => {
             >
               Mapa Nacional - Bolivia 2026
             </Typography>
+            {/* GitHub Link */}
+            <Link
+              href="https://github.com/willypaz243/asientosElectorales"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ display: "flex" }}
+            >
+              <GitHub sx={{ fontSize: 32, color: "text.secondary", mr: 0.5 }} />
+              <Typography variant="body2" sx={{ alignSelf: "center" }}>
+                GitHub
+              </Typography>
+            </Link>
           </Stack>
           <Typography variant="h6" color="text.secondary">
             Visualización de asientos electorales urbanos en todo el país
