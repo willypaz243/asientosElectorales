@@ -1,7 +1,7 @@
 // Tipos para datos electorales
 
 export interface Geometry {
-  type: 'Point' | 'Polygon' | 'LineString';
+  type: "Point" | "Polygon" | "LineString";
   coordinates: number[];
 }
 
@@ -12,10 +12,10 @@ export interface ElectoralSeat {
   Municipio: string;
   Asiento_Electoral: string;
   Id_Localidad: number;
-  Tipo_Circunscripcion: 'Uninominal' | 'Binominal' | 'Plurinominal';
+  Tipo_Circunscripcion: "Uninominal" | "Binominal" | "Plurinominal";
   Latitud: number;
   Longitud: number;
-  Tipo_Urbano_Rural: 'Urbano' | 'Rural';
+  Tipo_Urbano_Rural: "Urbano" | "Rural";
   Estado: string;
   Geometry_X: number;
   Geometry_Y: number;
@@ -48,6 +48,6 @@ export interface FilterOptions {
 }
 
 export interface MapView {
-  level: 'country' | 'department' | 'province';
+  level: "country" | "department" | "province";
   data: Partial<ElectoralSeat>;
 }

@@ -14,10 +14,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-import {
-  Map as MapIcon,
-  Place,
-} from "@mui/icons-material";
+import { Map as MapIcon, Place } from "@mui/icons-material";
 import MapComponent from "../components/MapComponent";
 import { SeatMarkers } from "../components/SeatMarkers";
 import { electoralDataService } from "../services/electoralData.service";
@@ -38,17 +35,11 @@ const VistaNacional = () => {
     const loadSeats = async () => {
       try {
         setLoading(true);
-        console.log("=== Iniciando carga de asientos ===");
+
         await electoralDataService.loadSeats();
         const allSeats = electoralDataService.getSeats();
-        console.log("=== Asientos cargados exitosamente ===");
-        console.log("Total de asientos:", allSeats.length);
-        
-        // Filtrar solo asientos urbanos para la vista nacional
-        const urbanSeats = allSeats.filter((seat) => seat.Tipo_Urbano_Rural === "Urbano");
-        console.log("Asientos urbanos:", urbanSeats.length);
-        
-        setSeats(urbanSeats);
+
+        setSeats(allSeats);
         setError(null);
       } catch (err) {
         console.error("=== Error al cargar asientos ===", err);
@@ -66,7 +57,7 @@ const VistaNacional = () => {
       level: "department",
       data: { Departamento: nombre },
     });
-    navigate(`/vista_departamento/${nombre.toLowerCase()}`, {
+    navigate(`/vista_departamento/${nombre}`, {
       state: { level: "department", data: { Departamento: nombre } },
     });
   };
@@ -155,7 +146,11 @@ const VistaNacional = () => {
                   center={[DEFAULT_LATITUDE, DEFAULT_LONGITUDE]}
                   zoom={ZOOM_COUNTRY}
                 >
-                  <SeatMarkers seats={seats} />
+                  <SeatMarkers
+                    seats={seats.filter(
+                      (seat) => seat.Tipo_Urbano_Rural === "Urbano",
+                    )}
+                  />
                 </MapComponent>
               </Box>
             )}
@@ -169,16 +164,20 @@ const VistaNacional = () => {
           </Typography>
           <Stack spacing={1}>
             <Typography variant="body2" color="text.secondary">
-              • <strong>Hover (pasar el mouse):</strong> Muestra información rápida del asiento electoral
+              • <strong>Hover (pasar el mouse):</strong> Muestra información
+              rápida del asiento electoral
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              • <strong>Click:</strong> Abre un popup con información detallada del asiento
+              • <strong>Click:</strong> Abre un popup con información detallada
+              del asiento
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              • <strong>Zoom:</strong> Usa la rueda del mouse o los controles para acercar/alejar
+              • <strong>Zoom:</strong> Usa la rueda del mouse o los controles
+              para acercar/alejar
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              • <strong>Arrastrar:</strong> Mueve el mapa para explorar diferentes áreas
+              • <strong>Arrastrar:</strong> Mueve el mapa para explorar
+              diferentes áreas
             </Typography>
           </Stack>
         </Paper>
@@ -191,10 +190,10 @@ const VistaNacional = () => {
             gutterBottom
             fontWeight="medium"
           >
-            Resumen Nacional (Asientos Urbanos)
+            Estadísticas Generales - Bolivia 2026
           </Typography>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <Paper
                 sx={{
                   p: 3,
@@ -206,7 +205,27 @@ const VistaNacional = () => {
                 elevation={0}
               >
                 <Typography variant="h4" color="primary.main" fontWeight="bold">
-                  {seats.length.toLocaleString()}
+                  {seats.length}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Total
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <Paper
+                sx={{
+                  p: 3,
+                  textAlign: "center",
+                  bgcolor: "primary.50",
+                  border: 1,
+                  borderColor: "primary.200",
+                }}
+                elevation={0}
+              >
+                <Typography variant="h4" color="primary.main" fontWeight="bold">
+                  {seats.filter((s) => s.Tipo_Urbano_Rural === "Urbano").length}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -218,31 +237,31 @@ const VistaNacional = () => {
               </Paper>
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <Paper
                 sx={{
                   p: 3,
                   textAlign: "center",
-                  bgcolor: "success.50",
+                  bgcolor: "info.50",
                   border: 1,
-                  borderColor: "success.200",
+                  borderColor: "info.200",
                 }}
                 elevation={0}
               >
-                <Typography variant="h4" color="success.main" fontWeight="bold">
-                  {seats.filter((s) => s.Estado === "Activo").length}
+                <Typography variant="h4" color="info.main" fontWeight="bold">
+                  {seats.filter((s) => s.Tipo_Urbano_Rural === "Rural").length}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
                   sx={{ mt: 1 }}
                 >
-                  Activos
+                  Asientos Rurales
                 </Typography>
               </Paper>
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <Paper
                 sx={{
                   p: 3,
@@ -254,19 +273,80 @@ const VistaNacional = () => {
                 elevation={0}
               >
                 <Typography variant="h4" color="warning.main" fontWeight="bold">
-                  {seats.filter((s) => s.Tipo_Circunscripcion === "Uninominal").length}
+                  {
+                    seats.filter((s) => s.Tipo_Circunscripcion === "Mixto")
+                      .length
+                  }
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
                   sx={{ mt: 1 }}
                 >
-                  Uninominales
+                  Circunscripciones Mixtas
                 </Typography>
               </Paper>
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <Paper
+                sx={{
+                  p: 3,
+                  textAlign: "center",
+                  bgcolor: "info.50",
+                  border: 1,
+                  borderColor: "info.200",
+                }}
+                elevation={0}
+              >
+                <Typography variant="h4" color="info.main" fontWeight="bold">
+                  {
+                    seats.filter((s) => s.Tipo_Circunscripcion === "Uninominal")
+                      .length
+                  }
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  Circunscripciones Uninominales
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <Paper
+                sx={{
+                  p: 3,
+                  textAlign: "center",
+                  bgcolor: "secondary.50",
+                  border: 1,
+                  borderColor: "secondary.200",
+                }}
+                elevation={0}
+              >
+                <Typography
+                  variant="h4"
+                  color="secondary.main"
+                  fontWeight="bold"
+                >
+                  {
+                    seats.filter((s) => s.Tipo_Circunscripcion === "Especial")
+                      .length
+                  }
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  Circunscripciones Especiales
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
               <Paper
                 sx={{
                   p: 3,
