@@ -1,0 +1,86 @@
+/* Estilos personalizados para Popups de Leaflet */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Forzar que el popup aparezca arriba del marcador */
+.leaflet-popup {
+  margin-bottom: 30px !important;
+}
+
+/* Ajustar la posición del popup para que aparezca arriba */
+.leaflet-popup-top {
+  margin-bottom: 30px !important;
+}
+
+.leaflet-popup-bottom {
+  margin-top: 30px !important;
+}
+
+/* Forzar que el tip del popup apunte hacia abajo */
+.leaflet-popup-top .leaflet-popup-tip {
+  transform: rotate(180deg) !important;
+}
+
+/* Animación suave para popups */
+.leaflet-popup {
+  animation: popupFadeIn 0.3s ease-out !important;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos mejorados para Tooltips */
+.leaflet-tooltip {
+  background: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  color: #333 !important;
+  font-size: 13px !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: white !important;
+}
+
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: white !important;
+}
+
+.leaflet-tooltip-left:before {
+  border-left-color: white !important;
+}
+
+.leaflet-tooltip-right:before {
+  border-right-color: white !important;
+}
+
+/* Animación suave para tooltips */
+.leaflet-tooltip {
+  animation: tooltipFadeIn 0.2s ease-out !important;
+}
